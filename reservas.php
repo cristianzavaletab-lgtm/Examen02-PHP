@@ -51,10 +51,10 @@ $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="crear_reserva.php" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Nueva Reserva</a>
 </div>
 
-<div class="card">
-    <div class="card-body p-0">
+<div class="card shadow-sm border-0">
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0 datatable">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -83,15 +83,10 @@ $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?= $dias ?> días</td>
                             <td class="text-center">
                                 <a href="editar_reserva.php?id=<?= $reserva['id'] ?>" class="btn btn-sm btn-outline-warning mx-1" title="Editar"><i class="fa-solid fa-pen"></i></a>
-                                <a href="eliminar_reserva.php?id=<?= $reserva['id'] ?>" class="btn btn-sm btn-outline-danger mx-1" onclick="return confirm('¿Seguro que deseas cancelar esta reserva?')" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+                                <a href="eliminar_reserva.php?id=<?= $reserva['id'] ?>" class="btn btn-sm btn-outline-danger mx-1 delete-btn" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                    <?php if(empty($reservas)): ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">No hay reservas registradas en el sistema.</td>
-                        </tr>
-                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
