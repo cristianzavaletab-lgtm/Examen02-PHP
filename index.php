@@ -2,17 +2,61 @@
 require 'config.php';
 require 'header.php';
 
-$stmt = $pdo->query("SELECT * FROM habitaciones");
+// Filtros
+$searchNumero = $_GET['search_numero'] ?? '';
+$searchTipo = $_GET['search_tipo'] ?? '';
+
+$query = "SELECT * FROM habitaciones WHERE 1=1";
+$params = [];
+
+if (!empty($searchNumero)) {
+    $query .= " AND numero LIKE ?";
+    $params[] = "%$searchNumero%";
+}
+
+if (!empty($searchTipo)) {
+    $query .= " AND tipo = ?";
+    $params[] = $searchTipo;
+}
+
+$stmt = $pdo->prepare($query);
+$stmt->execute($params);
 $habitaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="d-flex justify-content-between align-items-center page-header">
+<div class="d-flex justify-content-between align-items-center page-header mb-4 border-0">
     <div>
         <h2 class="mb-1">Catálogo de Habitaciones</h2>
         <p style="color: var(--text-muted); font-size: 0.9rem;">Explora nuestra selección de espacios exclusivos.</p>
     </div>
     <a href="crear_habitacion.php" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i> Añadir Habitación</a>
 </div>
+
+<!-- Filtros Elegant Form -->
+<form action="index.php" method="GET" class="mb-5">
+    <div class="row g-3 align-items-end p-4" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+        <div class="col-md-5">
+            <label class="form-label" style="font-size: 0.85rem; letter-spacing: 1px; color: var(--accent-gold); text-transform: uppercase;">N° de Habitación</label>
+            <input type="text" name="search_numero" class="form-control" placeholder="Buscar..." value="<?= htmlspecialchars($searchNumero) ?>">
+        </div>
+        <div class="col-md-5">
+            <label class="form-label" style="font-size: 0.85rem; letter-spacing: 1px; color: var(--accent-gold); text-transform: uppercase;">Categoría</label>
+            <select name="search_tipo" class="form-select">
+                <option value="">Todas las categorías</option>
+                <option value="Simple" <?= $searchTipo == 'Simple' ? 'selected' : '' ?>>Simple</option>
+                <option value="Doble" <?= $searchTipo == 'Doble' ? 'selected' : '' ?>>Doble</option>
+                <option value="Matrimonial" <?= $searchTipo == 'Matrimonial' ? 'selected' : '' ?>>Matrimonial</option>
+                <option value="Suite" <?= $searchTipo == 'Suite' ? 'selected' : '' ?>>Suite</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex">
+            <button type="submit" class="btn btn-outline-warning w-100 me-2" title="Filtrar"><i class="fa-solid fa-filter"></i></button>
+            <?php if(!empty($searchNumero) || !empty($searchTipo)): ?>
+                <a href="index.php" class="btn btn-outline-danger w-100" title="Limpiar"><i class="fa-solid fa-times"></i></a>
+            <?php endif; ?>
+        </div>
+    </div>
+</form>
 
 <div class="row mt-4">
     <?php foreach ($habitaciones as $hab): ?>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +19,18 @@
             --accent-gold: #d4af37;
             --accent-hover: #b5952f;
             --border-color: rgba(255, 255, 255, 0.05);
+            --nav-bg: rgba(11, 17, 33, 0.95);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-gold: #b5952f;
+            --accent-hover: #8f7522;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.95);
         }
         
         body { 
@@ -26,6 +38,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         h1, h2, h3, h4, h5, .navbar-brand {
@@ -33,10 +46,11 @@
         }
 
         .navbar { 
-            background: rgba(11, 17, 33, 0.95); 
+            background: var(--nav-bg); 
             backdrop-filter: blur(10px);
             padding: 1.2rem 0;
             border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
         }
 
         .navbar-brand {
@@ -65,14 +79,14 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 0;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease, border-color 0.3s ease;
             overflow: hidden;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: rgba(212, 175, 55, 0.5);
         }
 
         .img-preview { 
@@ -118,13 +132,13 @@
         .btn-primary {
             background-color: var(--accent-gold);
             border-color: var(--accent-gold);
-            color: #000;
+            color: #fff;
         }
 
         .btn-primary:hover {
             background-color: var(--accent-hover);
             border-color: var(--accent-hover);
-            color: #000;
+            color: #fff;
         }
 
         .btn-outline-warning {
@@ -133,7 +147,7 @@
         }
         .btn-outline-warning:hover {
             background-color: var(--accent-gold);
-            color: #000;
+            color: #fff;
         }
 
         .btn-outline-danger {
@@ -153,7 +167,7 @@
         }
         
         .table-hover tbody tr:hover {
-            background-color: rgba(255,255,255,0.02);
+            background-color: var(--border-color);
             color: var(--accent-gold);
         }
 
@@ -183,7 +197,7 @@
             font-family: 'Inter', sans-serif;
         }
         
-        .badge-Simple { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
+        .badge-Simple { background-color: rgba(148, 163, 184, 0.2); color: #94a3b8; }
         .badge-Doble { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
         .badge-Matrimonial { background-color: rgba(236, 72, 153, 0.2); color: #f472b6; }
         .badge-Suite { background-color: rgba(212, 175, 55, 0.2); color: var(--accent-gold); }
@@ -196,14 +210,14 @@
         
         /* Form Controls */
         .form-control, .form-select {
-            background-color: rgba(0,0,0,0.2);
+            background-color: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             border-radius: 0;
             padding: 0.8rem;
         }
         .form-control:focus, .form-select:focus {
-            background-color: rgba(0,0,0,0.4);
+            background-color: var(--bg-color);
             border-color: var(--accent-gold);
             color: var(--text-main);
             box-shadow: none;
@@ -218,7 +232,7 @@
                 <i class="fa-solid fa-bars text-white fs-4"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" href="index.php">
                             Habitaciones
@@ -228,6 +242,11 @@
                         <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'reservas.php' ? 'active' : '' ?>" href="reservas.php">
                             Reservas
                         </a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <button id="themeToggle" class="btn btn-outline-warning rounded-circle p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-sun" id="themeIcon"></i>
+                        </button>
                     </li>
                 </ul>
             </div>
