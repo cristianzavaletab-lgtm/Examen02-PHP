@@ -5,133 +5,215 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grand Hotel - Sistema de Reservas</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- DataTables CSS -->
-    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #0f172a;
-            --accent-color: #3b82f6;
-            --text-dark: #1e293b;
-            --bg-color: #f8fafc;
+            --bg-color: #0b1121;
+            --card-bg: #151e32;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-gold: #d4af37;
+            --accent-hover: #b5952f;
+            --border-color: rgba(255, 255, 255, 0.05);
         }
+        
         body { 
-            font-family: 'Outfit', sans-serif; 
+            font-family: 'Inter', sans-serif; 
             background-color: var(--bg-color);
-            color: var(--text-dark);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
         }
+        
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Playfair Display', serif;
+        }
+
         .navbar { 
-            background: rgba(15, 23, 42, 0.95); 
+            background: rgba(11, 17, 33, 0.95); 
             backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border-color);
         }
+
         .navbar-brand {
             font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.5px;
-            color: #fff !important;
+            font-size: 1.8rem;
+            color: var(--accent-gold) !important;
+            letter-spacing: 1px;
         }
-        .navbar-brand i { color: var(--accent-color); }
+
         .nav-link { 
-            color: #cbd5e1 !important; 
+            color: var(--text-muted) !important; 
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
-            margin: 0 0.5rem;
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem !important;
+            margin: 0 1rem;
         }
-        .nav-link:hover { 
-            color: #fff !important;
-            background: rgba(255,255,255,0.1);
+
+        .nav-link:hover, .nav-link.active { 
+            color: var(--accent-gold) !important;
         }
-        .nav-link.active {
-            color: #fff !important;
-            background: var(--accent-color);
-        }
-        /* Card Styles */
+
+        /* Premium Cards */
         .card { 
-            border: none;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             overflow: hidden;
-            background: #fff;
         }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(212, 175, 55, 0.3);
         }
+
         .img-preview { 
-            height: 250px; 
+            height: 300px; 
             object-fit: cover; 
-            transition: transform 0.5s ease;
+            filter: brightness(0.85);
+            transition: filter 0.5s ease, transform 0.5s ease;
         }
+
         .card:hover .img-preview {
-            transform: scale(1.05);
+            filter: brightness(1);
+            transform: scale(1.03);
         }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-title {
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .card-footer {
+            background-color: transparent;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        /* Buttons */
         .btn {
-            border-radius: 0.5rem;
-            font-weight: 500;
-            padding: 0.6rem 1.2rem;
+            border-radius: 0;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
             transition: all 0.3s ease;
         }
+
         .btn-primary {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: #000;
         }
+
         .btn-primary:hover {
-            background-color: #2563eb;
-            border-color: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            color: #000;
         }
-        /* Table Styles */
+
+        .btn-outline-warning {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+        .btn-outline-warning:hover {
+            background-color: var(--accent-gold);
+            color: #000;
+        }
+
+        .btn-outline-danger {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        .btn-outline-danger:hover {
+            background-color: #ef4444;
+            color: #fff;
+        }
+
+        /* Table Premium */
         .table {
-            border-collapse: separate;
-            border-spacing: 0;
-            background: white;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+            border-color: var(--border-color);
+            margin-bottom: 0;
         }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(255,255,255,0.02);
+            color: var(--accent-gold);
+        }
+
         .table thead th {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 1rem;
-            font-weight: 600;
+            background-color: transparent;
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            padding: 1.5rem 1rem;
         }
+
         .table tbody td {
-            padding: 1rem;
+            padding: 1.5rem 1rem;
             vertical-align: middle;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
         }
+
+        /* Badges */
         .badge {
             padding: 0.5em 1em;
-            border-radius: 2rem;
             font-weight: 500;
+            letter-spacing: 0.5px;
+            border-radius: 0;
+            font-family: 'Inter', sans-serif;
         }
-        .badge-Simple { background-color: #94a3b8; }
-        .badge-Doble { background-color: #3b82f6; }
-        .badge-Matrimonial { background-color: #ec4899; }
-        .badge-Suite { background-color: #eab308; color: #000; }
         
+        .badge-Simple { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
+        .badge-Doble { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .badge-Matrimonial { background-color: rgba(236, 72, 153, 0.2); color: #f472b6; }
+        .badge-Suite { background-color: rgba(212, 175, 55, 0.2); color: var(--accent-gold); }
+
         .page-header {
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        /* Form Controls */
+        .form-control, .form-select {
+            background-color: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 0;
+            padding: 0.8rem;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(0,0,0,0.4);
+            border-color: var(--accent-gold);
+            color: var(--text-main);
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-5">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><i class="fa-solid fa-hotel me-2"></i>Grand Hotel</a>
+            <a class="navbar-brand" href="index.php">GRAND HOTEL</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <i class="fa-solid fa-bars text-white fs-4"></i>
             </button>
@@ -139,12 +221,12 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" href="index.php">
-                            <i class="fa-solid fa-bed me-1"></i> Habitaciones
+                            Habitaciones
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'reservas.php' ? 'active' : '' ?>" href="reservas.php">
-                            <i class="fa-solid fa-calendar-check me-1"></i> Reservas
+                            Reservas
                         </a>
                     </li>
                 </ul>

@@ -4,99 +4,51 @@ require 'header.php';
 
 $stmt = $pdo->query("SELECT * FROM habitaciones");
 $habitaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Datos para el gráfico
-$stmtTipos = $pdo->query("SELECT tipo, COUNT(*) as cantidad FROM habitaciones GROUP BY tipo");
-$tiposData = $stmtTipos->fetchAll(PDO::FETCH_ASSOC);
-$labels = [];
-$data = [];
-foreach($tiposData as $row) {
-    $labels[] = $row['tipo'];
-    $data[] = $row['cantidad'];
-}
 ?>
 
-<div class="row mb-5 align-items-center">
-    <div class="col-md-8">
-        <div class="d-flex justify-content-between align-items-center mb-2 page-header border-0">
-            <div>
-                <h2 class="mb-1 fw-bold">Inventario de Habitaciones</h2>
-                <p class="text-muted">Administra el catálogo de habitaciones disponibles en el hotel.</p>
-            </div>
-            <a href="crear_habitacion.php" class="btn btn-primary shadow"><i class="fa-solid fa-plus me-1"></i> Nueva Habitación</a>
-        </div>
+<div class="d-flex justify-content-between align-items-center page-header">
+    <div>
+        <h2 class="mb-1">Catálogo de Habitaciones</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Explora nuestra selección de espacios exclusivos.</p>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-2" style="height: 150px; display: flex; justify-content: center;">
-                <canvas id="tiposChart"></canvas>
-            </div>
-        </div>
-    </div>
+    <a href="crear_habitacion.php" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i> Añadir Habitación</a>
 </div>
 
-<div class="row">
+<div class="row mt-4">
     <?php foreach ($habitaciones as $hab): ?>
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-5">
             <div class="card h-100">
                 <?php if ($hab['imagen']): ?>
                     <div style="overflow: hidden;">
                         <img src="uploads/<?= htmlspecialchars($hab['imagen']) ?>" class="card-img-top img-preview" alt="Habitación">
                     </div>
                 <?php else: ?>
-                    <div class="bg-secondary text-white text-center py-5 d-flex align-items-center justify-content-center" style="height: 250px;">
-                        <i class="fa-solid fa-image fa-3x opacity-50"></i>
+                    <div class="text-white text-center py-5 d-flex align-items-center justify-content-center" style="height: 300px; background-color: rgba(255,255,255,0.02);">
+                        <i class="fa-solid fa-image fa-3x" style="opacity: 0.1"></i>
                     </div>
                 <?php endif; ?>
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0 fw-bold">Habitación N° <?= htmlspecialchars($hab['numero']) ?></h5>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge badge-<?= htmlspecialchars($hab['tipo']) ?>"><?= htmlspecialchars($hab['tipo']) ?></span>
                     </div>
+                    <h3 class="card-title mt-3 mb-0">N° <?= htmlspecialchars($hab['numero']) ?></h3>
                 </div>
-                <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
-                    <a href="editar_habitacion.php?id=<?= $hab['id'] ?>" class="btn btn-sm btn-outline-warning w-45 fw-bold"><i class="fa-solid fa-pen me-1"></i> Editar</a>
-                    <a href="eliminar_habitacion.php?id=<?= $hab['id'] ?>" class="btn btn-sm btn-outline-danger w-45 fw-bold delete-btn"><i class="fa-solid fa-trash me-1"></i> Eliminar</a>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="editar_habitacion.php?id=<?= $hab['id'] ?>" class="btn btn-outline-warning w-100 me-2"><i class="fa-solid fa-pen me-2"></i> Editar</a>
+                    <a href="eliminar_habitacion.php?id=<?= $hab['id'] ?>" class="btn btn-outline-danger w-100 delete-btn"><i class="fa-solid fa-trash me-2"></i> Eliminar</a>
                 </div>
             </div>
         </div>
     <?php endforeach; ?>
     <?php if(empty($habitaciones)): ?>
         <div class="col-12">
-            <div class="text-center py-5 text-muted bg-white rounded shadow-sm">
-                <i class="fa-solid fa-bed fa-4x mb-3 opacity-25"></i>
-                <h5>No hay habitaciones registradas.</h5>
-                <p>Haz clic en "Nueva Habitación" para empezar.</p>
+            <div class="text-center py-5" style="border: 1px dashed var(--border-color); margin-top: 2rem;">
+                <i class="fa-solid fa-bed fa-3x mb-3" style="color: var(--border-color);"></i>
+                <h4 style="color: var(--text-muted)">No hay habitaciones registradas.</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">El catálogo está vacío.</p>
             </div>
         </div>
     <?php endif; ?>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const ctx = document.getElementById('tiposChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: <?= json_encode($labels) ?>,
-                    datasets: [{
-                        data: <?= json_encode($data) ?>,
-                        backgroundColor: ['#94a3b8', '#3b82f6', '#ec4899', '#eab308'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } },
-                        title: { display: true, text: 'Distribución', font: { size: 12 } }
-                    }
-                }
-            });
-        }
-    });
-</script>
 
 <?php require 'footer.php'; ?>
